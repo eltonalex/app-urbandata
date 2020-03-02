@@ -63,8 +63,12 @@ routes.get('/pesquisa', async (request, response) =>{
 
     try {
 
-        const pesquisa = await Pesquisa.find({});
-        return response.json(pesquisa);
+        Pesquisa.find({}, function (err, pesquisa) {
+            response.status(200).json(pesquisa);
+        });
+
+        //const pesquisa = await Pesquisa.find({});
+        //return response.json(pesquisa);
              
     } catch (error) {
         
