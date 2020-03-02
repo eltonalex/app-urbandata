@@ -41,10 +41,32 @@ routes.get('/autor', async (request, response) => {
 
  });
 
-routes.put('/autor', async (request, response) => { 
+routes.put('/autor/:id', async (request, response) => { 
+    
+    const autor = await Autor.updateOne({"_id":request.param.id}, request.body, (err) => {
+        if(err) return response.status(400).json({
+            error:true,
+            message:"Não foi possível realizar a edição do registro!"
+        });
+
+        return response.json({
+            error:false,
+            message:"Registro editado com sucesso!"
+        });
+    });
+
+    console.log(autor);
 
  });
 
 routes.delete('/autor', async (request, response) => { 
+   
+    Autor.destroy({
+        where:{"_id":request.param.id}
+    }).then(function(){
+        response.send("Pagamento apagado com sucesso!");
+    }).catch(function(){
+        response.send("Pagamento não foi apagado com sucesso!")
+    });
 
 });

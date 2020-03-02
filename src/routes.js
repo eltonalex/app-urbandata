@@ -1,6 +1,7 @@
 
 const { Router } = require('express');
 //para utilização de api´s externas
+const Mongoose = require('mongoose');
 const axios = require('axios');
 const User = require('./models/User');
 const Autor = require('./models/Autor');
@@ -9,6 +10,7 @@ const Publicacao = require('./models/Publicacao');
 const PublicacaoLivro = require('./models/PublicacaoLivro');
 const Instituicao = require('./models/Instituicao');
 const TipoInstituicao = require('./models/TipoInstituicao');
+const Pesquisa = require('./models/Pesquisa');
 
 
 
@@ -57,6 +59,32 @@ routes.post('/usuario', async (request, response) =>{
 
 })
 
+routes.post('/pesquisa', async (request, response) =>{
+
+    //A - Administrador, E - Editor, P - Pesquisador
+
+    const {AreasConhecimento} = request.body;
+    
+    try {
+
+        await Pesquisa.findOne({AreasConhecimento}, function(err, pesquisa) {
+            if (!err){ 
+                console.log(pesquisa);
+                return response.json(pesquisa);
+                process.exit();
+            } else {throw err;}
+        });
+        
+    } catch (error) {
+        
+        return response.status(400).send({error:'Não foi possível realizar o cadastro.'});
+
+    }
+
+    
+
+})
+
 routes.get('/autor', async (request, response) => {
     await Autor.find({}, function(err, autor) {
         if (!err){ 
@@ -70,7 +98,7 @@ routes.get('/autor', async (request, response) => {
  routes.post('/autor', async (request, response) => {
     const { nome, email, orcid, lattes, github_username, dataNascimento, paisNascimento, sexo, palavrasChaves} = request.body;
 
-    const apiResponse = await axios.get(`https://api.github.com/users/${github_username}`);
+    //const apiResponse = await axios.get(`https://api.github.com/users/${github_username}`);
 
     const palavrasChavesArray = palavrasChaves.split(',').map(palavraChave=> palavraChave.trim());
 
@@ -93,6 +121,41 @@ routes.get('/autor', async (request, response) => {
     });
 
  });
+
+ routes.put('/autor/:id', async (request, response) => { 
+    
+    let id =  request.params.id;
+
+    const autor = await Autor.updateOne({ "_id": `${id}` }, request.body, (err) => {
+        if(err) return response.status(400).json({
+            error:true,
+            message:"Não foi possível realizar a edição do registro!"
+        });
+
+        return response.json({
+            error:false,
+            message:"Registro editado com sucesso!"
+        });
+    });
+
+    console.log(autor);
+
+ });
+
+ routes.delete('/autor/:id', async (request, response) => { 
+   
+    let id =  request.params.id;
+    console.log(id);
+    const query = { "_id": `${id}` };
+
+    await Autor.deleteOne(query)
+    .then(function(){
+        response.send("Pagamento apagado com sucesso!");
+    }).catch(function(){
+        response.send("Pagamento não foi apagado com sucesso!")
+    });
+
+});
 
  routes.get('/thesaurus', async (request, response) => {
     await Thesaurus.find({}, function(err, thesaurus) {
@@ -320,70 +383,3 @@ routes.get('/autor', async (request, response) => {
  });
 
  module.exports = routes;
-
- /*
-
-//Métodos HTTP: GET, POST, PUT, DELETE
-
-//Tipos de parâmetros:
-
-//Query Params: exemplo: http://localhost:3333/users?search=Elton | Acessando: request.query (Identifica filtros, ordenação, paginação, ...)
-//Route Params: exemplo: http://localhost:3333/users/1 | Acessando: request.params (Identifica um recurso na alteração ou remoção)
-//Body: Params: exemplo: http://localhost:3333/users | Acessando: request.body (Dados para criação ou alteração de um registro)
-
-routes.get('/',(request, response) =>{
-
-    //return response.send('Olá mundo');
-    return response.json({message:'Olá mundo Novo!'});
-
-})
-
-//Devs
-routes.get('/devs', DevController.index)
-routes.post('/devs', DevController.store)
-
-//search
-routes.get('/search', SearchController.index)
-
-
-//Users
-routes.get('/users',(request, response) =>{
-
-    //return response.send('Olá mundo');
-    console.log(request.query);
-    return response.json({message:'Olá Usuário!'});
-
-})
-
-routes.post('/users/',(request, response) =>{
-
-    console.log(request.body);
-    return response.json({message:'Enviando dados do Usuário!'});
-
-})
-
-routes.put('/users/:id',(request, response) =>{
-
-    //return response.send('Olá mundo');
-    console.log(request.body);
-    return response.json({message:'Alterando o Usuário!'});
-
-})
-
-routes.put('/users/:id',(request, response) =>{
-
-    //return response.send('Olá mundo');
-    console.log(request.params);
-    return response.json({message:'Alterando o Usuário!'});
-
-})
-
-routes.delete('/users/:id',(request, response) =>{
-
-    //return response.send('Olá mundo');
-    console.log(request.params);
-    return response.json({message:'Excluindo o Usuário!'});
-
-})
-
- */
