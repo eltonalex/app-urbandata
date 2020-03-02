@@ -57,9 +57,9 @@ routes.post('/usuario', async (request, response) =>{
 
     
 
-})
+});
 
-routes.post('/pesquisa', async (request, response) =>{
+routes.get('/pesquisa', async (request, response) =>{
 
     //A - Administrador, E - Editor, P - Pesquisador
 
@@ -67,13 +67,8 @@ routes.post('/pesquisa', async (request, response) =>{
     
     try {
 
-        await Pesquisa.findOne({AreasConhecimento}, function(err, pesquisa) {
-            if (!err){ 
-                console.log(pesquisa);
-                return response.json(pesquisa);
-                process.exit();
-            } else {throw err;}
-        });
+        const pesquisa =  await Pesquisa.findOne({AreasConhecimento});
+        return response.json(pesquisa);
         
     } catch (error) {
         
@@ -83,7 +78,7 @@ routes.post('/pesquisa', async (request, response) =>{
 
     
 
-})
+});
 
 routes.get('/autor', async (request, response) => {
     await Autor.find({}, function(err, autor) {
