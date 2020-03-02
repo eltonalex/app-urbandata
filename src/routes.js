@@ -114,7 +114,7 @@ routes.get('/pesquisa', async (request, response) =>{
 
 routes.get('/pesquisa/area-conhecimento/', async (request, response) =>{
 
-    const {AreasConhecimento} = request.body;
+    const {AreasConhecimento} = request.query;
     
     try {
 
