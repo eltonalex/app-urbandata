@@ -118,7 +118,7 @@ routes.get('/pesquisa/area-conhecimento/', async (request, response) =>{
     
     try {
 
-        const pesquisa = await Pesquisa.findOne({AreasConhecimento});
+        const pesquisa = await Pesquisa.find({AreasConhecimento});
         return response.json(pesquisa);
         
         
