@@ -61,16 +61,32 @@ routes.post('/usuario', async (request, response) =>{
 
 routes.get('/pesquisa', async (request, response) =>{
 
+    try {
+
+        const pesquisa = await Pesquisa.find({});
+        return response.json(pesquisa);
+             
+    } catch (error) {
+        
+        return response.status(400).send({error:'Não foi possível realizar a pesquisa.'});
+
+    }
+
+});
+
+routes.get('/pesquisa/area-conhecimento/', async (request, response) =>{
+
     const {AreasConhecimento} = request.body;
     
     try {
 
-        const pesquisa =  await Pesquisa.findOne({AreasConhecimento});
-        return response.json(pesquisa.data);
+        const pesquisa = await Pesquisa.findOne({AreasConhecimento});
+        return response.json(pesquisa);
+        
         
     } catch (error) {
         
-        return response.status(400).send({error:'Não foi possível realizar o cadastro.'});
+        return response.status(400).send({error:'Não foi possível realizar a pesquisa.'});
 
     }
 
