@@ -61,14 +61,12 @@ routes.post('/usuario', async (request, response) =>{
 
 routes.get('/pesquisa', async (request, response) =>{
 
-    //A - Administrador, E - Editor, P - Pesquisador
-
     const {AreasConhecimento} = request.body;
     
     try {
 
         const pesquisa =  await Pesquisa.findOne({AreasConhecimento});
-        return response.json(pesquisa);
+        return response.json(pesquisa.data);
         
     } catch (error) {
         
