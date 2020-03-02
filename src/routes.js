@@ -63,7 +63,7 @@ routes.get('/pesquisa', async (request, response) =>{
 
     try {
 
-        Pesquisa.find({}, function (err, pesquisa) {
+        User.find({}, function (err, pesquisa) {
             response.status(200).json(pesquisa);
         });
 
