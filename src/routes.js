@@ -59,11 +59,45 @@ routes.post('/usuario', async (request, response) =>{
 
 });
 
+routes.post('/pesquisa', async (request, response) =>{
+
+    //A - Administrador, E - Editor, P - Pesquisador
+
+    const { AnoBase, IdPrograma, Regiao, Uf, IdTese, SiglaIes, NomeIes,
+        NomePrograma, GrandeAreaCodigo, GrandeAreaDescricao, AreasConhecimentoCodigo,
+        AreasConhecimento, AreaAvaliacao, DocumentoDiscente, Autor, EmailAutor,
+        TituloTese, Nivel, DataDefesa, PalavrasChave, Volume, NumeroPaginas,
+        BibliotecaDepositaria, Idioma, ResumoTese, IdLinhaPesquisa, URLTextoCompleto,
+        LinhaPesquisa} = request.body;
+    
+    try {
+
+        const pesquisa = await Pesquisa.create({
+            AnoBase, IdPrograma, Regiao, Uf, IdTese, SiglaIes, NomeIes,
+            NomePrograma, GrandeAreaCodigo, GrandeAreaDescricao, AreasConhecimentoCodigo,
+            AreasConhecimento, AreaAvaliacao, DocumentoDiscente, Autor, EmailAutor,
+            TituloTese, Nivel, DataDefesa, PalavrasChave, Volume, NumeroPaginas,
+            BibliotecaDepositaria, Idioma, ResumoTese, IdLinhaPesquisa, URLTextoCompleto,
+            LinhaPesquisa
+        });
+
+        return response.json(pesquisa);
+        
+    } catch (error) {
+        
+        return response.status(400).send({error:'Não foi possível realizar o cadastro.'});
+
+    }
+
+    
+
+});
+
 routes.get('/pesquisa', async (request, response) =>{
 
     try {
 
-        User.find({}, function (err, pesquisa) {
+        Pesquisa.find({}, function (err, pesquisa) {
             response.status(200).json(pesquisa);
         });
 
