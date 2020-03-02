@@ -14,5 +14,8 @@ app.use(cors());
 app.use(express.json());
 app.use(routes);
 
-// Definição da porta de acesso 
-app.listen(3335);
+var porta = process.env.PORT || 8080;
+console.log(porta);
+
+// Definição da porta de acesso, anterior 3335
+app.listen(porta);

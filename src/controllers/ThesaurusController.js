@@ -16,13 +16,13 @@ routes.get('/thesaurus', async (request, response) => {
 
  routes.post('/thesaurus', async (request, response) => {  
 
-    const { termo, sinonimos, antonimos, conceitos} = request.body;
+    const { termo, conceitos, sinonimos="sinônimo", antonimos="Antônimo"} = request.body;
 
     await Thesaurus.create({
         termo, 
+        conceitos,
         sinonimos, 
-        antonimos, 
-        conceitos, 
+        antonimos,  
     }, function(err, thesaurus) {
         if (!err){ 
             console.log(thesaurus);
