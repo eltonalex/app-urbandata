@@ -114,12 +114,13 @@ routes.get('/pesquisa', async (request, response) =>{
 
 routes.get('/pesquisa/area-conhecimento/', async (request, response) =>{
 
-    const {AreasConhecimento} = request.body;
+    const {AreasConhecimento} = request.query;
     
     try {
 
         const pesquisa = await Pesquisa.find({AreasConhecimento});
-        return response.json(pesquisa);
+        
+        return response.status(200).json(pesquisa);
         
         
     } catch (error) {
