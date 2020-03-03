@@ -95,15 +95,15 @@ routes.post('/pesquisa', async (request, response) =>{
 
 routes.get('/pesquisa', async (request, response) =>{
 
+    const {AreasConhecimento, Regiao} = request.query;
+    
     try {
 
-        Pesquisa.find({}, function (err, pesquisa) {
-            response.status(200).json(pesquisa);
-        });
-
-        //const pesquisa = await Pesquisa.find({});
-        //return response.json(pesquisa);
-             
+        const pesquisa = await Pesquisa.find({AreasConhecimento, Regiao});
+        
+        return response.status(200).json(pesquisa);
+        
+        
     } catch (error) {
         
         return response.status(400).send({error:'Não foi possível realizar a pesquisa.'});
