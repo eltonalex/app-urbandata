@@ -114,6 +114,27 @@ routes.get('/pesquisa', async (request, response) =>{
 
 routes.get('/pesquisa/area-conhecimento/', async (request, response) =>{
 
+    const {AreasConhecimento} = request.query;
+    
+    try {
+
+        const pesquisa = await Pesquisa.find({AreasConhecimento});
+        
+        return response.status(200).json(pesquisa);
+        
+        
+    } catch (error) {
+        
+        return response.status(400).send({error:'Não foi possível realizar a pesquisa.'});
+
+    }
+
+    
+
+});
+
+routes.post('/pesquisa/area-conhecimento/', async (request, response) =>{
+
     const {AreasConhecimento} = request.body;
     
     try {
