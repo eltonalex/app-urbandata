@@ -102,6 +102,13 @@ routes.get('/pesquisa', async (request, response) =>{
 
         const pesquisa = await Pesquisa.find( { $or: [ { AreasConhecimento }, { Regiao }, { ResumoTese : { $regex: '.*' + ResumoTese + '.*' } } ] } );
 
+        console.log(pesquisa);
+        console.log("------------------------------------------------------------------------------------------");
+
+        const pesquisa2 = await Pesquisa.find( {  ResumoTese : { $regex: '.*' + ResumoTese + '.*' } } );
+
+        console.log(pesquisa2);
+
         return response.status(200).json(pesquisa);
         
     } catch (error) {
