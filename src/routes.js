@@ -100,16 +100,24 @@ routes.get('/pesquisa', async (request, response) =>{
     try {
         
         if(!AreasConhecimento){
-            pesquisa = await Pesquisa.find( { AreasConhecimento } );
-            return response.status(200).json(pesquisa);
+            pesquisa_0 = await Pesquisa.find( { AreasConhecimento } );
+            console.log("-----------------AreasConhecimento------------------");
+            console.log(pesquisa_0);
+            return response.status(200).json(pesquisa_0);
         }else if(!Regiao){
-            pesquisa = await Pesquisa.find( { Regiao } );
-            return response.status(200).json(pesquisa);
+            pesquisa_1 = await Pesquisa.find( { Regiao } );
+            console.log("-----------------Regiao------------------");
+            console.log(pesquisa_1);
+            return response.status(200).json(pesquisa_1);
         }else if(!ResumoTese){
-            const pesquisa = await Pesquisa.find( {  ResumoTese : { $regex: '.*' + ResumoTese + '.*' } } );
-            return response.status(200).json(pesquisa);
+            const pesquisa_2 = await Pesquisa.find( {  ResumoTese : { $regex: '.*' + ResumoTese + '.*' } } );
+            console.log("-----------------ResumoTese------------------");
+            console.log(pesquisa_2);
+            return response.status(200).json(pesquisa_2);
         }else{
             const pesquisa = await Pesquisa.find( {} );
+            console.log("-----------------GERAL------------------");
+            console.log(pesquisa);
             return response.status(200).json(pesquisa);
         }      
         
