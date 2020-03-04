@@ -99,17 +99,20 @@ routes.get('/pesquisa', async (request, response) =>{
     
     try {
         
-
-        const pesquisa = await Pesquisa.find( { $or: [ { AreasConhecimento }, { Regiao }, { ResumoTese : { $regex: '.*' + ResumoTese + '.*' } } ] } );
-
-        console.log(pesquisa);
-        console.log("------------------------------------------------------------------------------------------");
-
-        const pesquisa2 = await Pesquisa.find( {  ResumoTese : { $regex: '.*' + ResumoTese + '.*' } } );
-
-        console.log(pesquisa2);
-
-        return response.status(200).json(pesquisa);
+        if(!AreasConhecimento){
+            pesquisa = await Pesquisa.find( { AreasConhecimento } );
+            return response.status(200).json(pesquisa);
+        }else if(!Regiao){
+            pesquisa = await Pesquisa.find( { Regiao } );
+            return response.status(200).json(pesquisa);
+        }else if(!ResumoTese){
+            const pesquisa = await Pesquisa.find( {  ResumoTese : { $regex: '.*' + ResumoTese + '.*' } } );
+            return response.status(200).json(pesquisa);
+        }else{
+            const pesquisa = await Pesquisa.find( {} );
+            return response.status(200).json(pesquisa);
+        }      
+        
         
     } catch (error) {
         
@@ -125,6 +128,7 @@ routes.get('/pesquisa/e', async (request, response) =>{
     
     try {
         
+        //const pesquisa = await Pesquisa.find( { $or: [ { AreasConhecimento }, { Regiao }, { ResumoTese : { $regex: '.*' + ResumoTese + '.*' } } ] } );
 
         const pesquisa = await Pesquisa.find( { $and: [ { AreasConhecimento }, { Regiao }, { ResumoTese : { $regex: '.*' + ResumoTese + '.*' } } ] } );
 
