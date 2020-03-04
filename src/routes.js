@@ -98,11 +98,11 @@ routes.get('/pesquisa', async (request, response) =>{
     const {AreasConhecimento, Regiao} = request.query;
     
     try {
+        
 
-        const pesquisa = await Pesquisa.find({AreasConhecimento, Regiao});
-        
+        const pesquisa = await Pesquisa.find( { $or: [ { AreasConhecimento }, { Regiao } ] } );
+
         return response.status(200).json(pesquisa);
-        
         
     } catch (error) {
         
