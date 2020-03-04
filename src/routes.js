@@ -237,6 +237,49 @@ routes.get('/pesquisa/area-conhecimento/', async (request, response) =>{
 
 });
 
+routes.get('/pesquisa/regiao/', async (request, response) =>{
+
+    const {Regiao} = request.query;
+    
+    try {
+
+        const pesquisa = await Pesquisa.find({Regiao});
+        
+        return response.status(200).json(pesquisa);
+        
+        
+    } catch (error) {
+        
+        return response.status(400).send({error:'Não foi possível realizar a pesquisa.'});
+
+    }
+
+    
+
+});
+
+
+routes.get('/pesquisa/resumo/', async (request, response) =>{
+
+    const {ResumoTese} = request.query;
+    
+    try {
+
+        const pesquisa = await Pesquisa.find( {  ResumoTese : { $regex: '.*' + ResumoTese + '.*' } } );
+        
+        return response.status(200).json(pesquisa);
+        
+        
+    } catch (error) {
+        
+        return response.status(400).send({error:'Não foi possível realizar a pesquisa.'});
+
+    }
+
+    
+
+});
+
 routes.post('/pesquisa/area-conhecimento/', async (request, response) =>{
 
     const {AreasConhecimento} = request.body;
