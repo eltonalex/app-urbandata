@@ -95,12 +95,31 @@ routes.post('/pesquisa', async (request, response) =>{
 
 routes.get('/pesquisa', async (request, response) =>{
 
-    const {AreasConhecimento, Regiao} = request.query;
+    const {AreasConhecimento, Regiao, ResumoTese} = request.query;
     
     try {
         
 
-        const pesquisa = await Pesquisa.find( { $or: [ { AreasConhecimento }, { Regiao } ] } );
+        const pesquisa = await Pesquisa.find( { $or: [ { AreasConhecimento }, { Regiao }, { ResumoTese : { $regex: '.*' + ResumoTese + '.*' } } ] } );
+
+        return response.status(200).json(pesquisa);
+        
+    } catch (error) {
+        
+        return response.status(400).send({error:'Não foi possível realizar a pesquisa.'});
+
+    }
+
+});
+
+routes.get('/pesquisa/e', async (request, response) =>{
+
+    const {AreasConhecimento, Regiao, ResumoTese} = request.query;
+    
+    try {
+        
+
+        const pesquisa = await Pesquisa.find( { $and: [ { AreasConhecimento }, { Regiao }, { ResumoTese : { $regex: '.*' + ResumoTese + '.*' } } ] } );
 
         return response.status(200).json(pesquisa);
         
