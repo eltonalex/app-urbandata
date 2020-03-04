@@ -105,27 +105,32 @@ routes.get('/pesquisa', async (request, response) =>{
         console.log(pesquisa_0);
         return response.status(200).json(pesquisa_0);
     
-    } else if (Regiao !== null || Regiao !== undefined || Regiao !== ''){
+    } 
+    
+    if (Regiao !== null || Regiao !== undefined || Regiao !== ''){
     
         pesquisa_1 = await Pesquisa.find( { Regiao } );
         console.log("-----------------Regiao------------------");
         console.log(pesquisa_1);
         return response.status(200).json(pesquisa_1);
     
-    } else if (ResumoTese !== null || ResumoTese !== undefined || ResumoTese !== ''){
+    } 
+    
+    if (ResumoTese !== null || ResumoTese !== undefined || ResumoTese !== ''){
     
         const pesquisa_2 = await Pesquisa.find( {  ResumoTese : { $regex: '.*' + ResumoTese + '.*' } } );
         console.log("-----------------ResumoTese------------------");
         console.log(pesquisa_2);
         return response.status(200).json(pesquisa_2);
     
-    } else {
+    } 
     
-        const pesquisa = await Pesquisa.find( {} );
-        console.log("-----------------GERAL------------------");
-        console.log(pesquisa);
-        return response.status(200).json(pesquisa);
-    }
+    
+    const pesquisa = await Pesquisa.find( {} );
+    console.log("-----------------GERAL------------------");
+    console.log(pesquisa);
+    return response.status(200).json(pesquisa);
+    
 
     /*
 
@@ -179,6 +184,27 @@ routes.get('/pesquisa/e', async (request, response) =>{
         //const pesquisa = await Pesquisa.find( { $or: [ { AreasConhecimento }, { Regiao }, { ResumoTese : { $regex: '.*' + ResumoTese + '.*' } } ] } );
 
         const pesquisa = await Pesquisa.find( { $and: [ { AreasConhecimento }, { Regiao }, { ResumoTese : { $regex: '.*' + ResumoTese + '.*' } } ] } );
+
+        return response.status(200).json(pesquisa);
+        
+    } catch (error) {
+        
+        return response.status(400).send({error:'Não foi possível realizar a pesquisa.'});
+
+    }
+
+});
+
+
+routes.get('/pesquisa/ou', async (request, response) =>{
+
+    const {AreasConhecimento, Regiao, ResumoTese} = request.query;
+    
+    try {
+        
+        //const pesquisa = await Pesquisa.find( { $or: [ { AreasConhecimento }, { Regiao }, { ResumoTese : { $regex: '.*' + ResumoTese + '.*' } } ] } );
+
+        const pesquisa = await Pesquisa.find( { $or: [ { AreasConhecimento }, { Regiao }, { ResumoTese : { $regex: '.*' + ResumoTese + '.*' } } ] } );
 
         return response.status(200).json(pesquisa);
         
