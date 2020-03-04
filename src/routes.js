@@ -96,7 +96,8 @@ routes.post('/pesquisa', async (request, response) =>{
 routes.get('/pesquisa', async (request, response) =>{
 
     const {AreasConhecimento="", Regiao="", ResumoTese=""} = request.query;
-    
+    console.log("Campos: "+AreasConhecimento+" - "+Regiao+" - "+ResumoTese);
+
     try {
         
         if(AreasConhecimento !== null || AreasConhecimento !== undefined || AreasConhecimento !== ''){
